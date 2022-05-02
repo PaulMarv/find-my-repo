@@ -11,13 +11,19 @@ function App({signOut}) {
   //ACCEPT USER INPUT
   const [user, setUser] = useState()
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(fetchReposAction(user))
+    dispatch(fetchProfileAction(user))
+  }
+
   //DISPATCH ACTION
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(fetchReposAction(user))
-    dispatch(fetchProfileAction(user))
-  },[dispatch,user])
+  // useEffect(()=>{
+  //   dispatch(fetchReposAction(user))
+  //   dispatch(fetchProfileAction(user))
+  // },[dispatch,user])
 
   //FETCH STORE DATA
   const store = useSelector(state => state?.repos);
@@ -56,13 +62,16 @@ function App({signOut}) {
         </ul>
       </section>
       <div className="search_bar">
-          <input
-            className="px-2 text-secondary"
-            type="text"
-            placeholder="Find a repository..."
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
-          />
+          <form onSubmit={handleSubmit}>
+            <input
+              className="px-2 text-secondary"
+              type="text"
+              placeholder="Find a repository..."
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+            />
+            <input type="submit" className="search_hidden_button"/>
+          </form>
       </div>
 
       {loading ? (
